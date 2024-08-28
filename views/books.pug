@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Books List
+  body
+    h1 Books List
+    ul
+      each book in books
+        li 
+          a(href="/" + book.isbn) | #{book.title} - #{book.author}
+          button(style="margin-right: 20px")
+            a(href="/edit/" + book.isbn) Edit
+          form(action="/" + book.isbn + "?_method=DELETE" method="POST" style="display: inline;")
+            button(type="submit") Delete
+    a(href='/new') Add New Book
+    div
+    a(href='/') Back to Home

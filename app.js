@@ -1,66 +1,56 @@
-// app.js
 const express = require("express");
-const bookData = require("./book-data");
 const path = require("path");
-
 const app = express();
-const port = 3000;
+let books = require("./book-data").books;
+const methodOverride = require("method-override");
 
-app.set("view engine", "pug");
+// Set the view engine to pug
 app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
+// Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Route to get all books
-app.get("/books", (req, res) => {
-  console.log(bookData);
-  res.json(bookData);
+app.use(methodOverride("_method"));
+// Define routes here
+app.get("/", function (req, res) {
+  res.render("books", { books });
 });
 
-// Route to get a single book by id and display the title and author
-app.get("/books/:id", (req, res) => {
-  const bookId = parseInt(req.params.id);
-  const book = bookData.books.find((b) => +b.isbn === bookId);
-  console.log(book);
-  if (book) {
-    res.json({ title: book.title, author: book.author });
-  } else {
-    res.status(404).json({ message: "Book not found" });
-  }
+app.post("/", function (req, res) {
+  books.push(req.body);
+  res.redirect("/");
 });
 
-// Route to delete a book by id
-app.delete("/books/delete/:id", (req, res) => {
-  const bookId = parseInt(req.params.id);
-  const bookIndex = bookData.books.findIndex((b) => +b.isbn === bookId);
-
-  if (bookIndex !== -1) {
-    bookData.splice(bookIndex, 1);
-    res.json({ message: "Book was deleted successfully" });
-  } else {
-    res.status(404).json({ message: "Book not found" });
-  }
+app.delete("/:id", function (req, res) {
+  const filteredList = books.filter((book) => book.isbn !== req.params.id);
+  books = filteredList;
+  res.redirect("/");
 });
 
-// Route to Update a Book by id
-app.post("/books/updated/:id", (req, res) => {
-  const bookId = parseInt(req.params.id);
-  const book = bookData.books.findIndex((b) => +b.isbn === bookId);
-  console.log(req.body);
-  if (book >= 0 && book < bookData.books.length) {
-    bookData.books[book] = req.body;
-  }
-  res.render("index", { book: bookData.books[book] });
+app.get("/new", function (req, res) {
+  res.render("new-book");
 });
 
-app.get("/books/edit/:id", (req, res) => {
-  const bookId = parseInt(req.params.id);
-  const book = bookData.books.find((b) => +b.isbn === bookId);
+app.get("/:id", function (req, res) {
+  const isbn = req.params.id;
+  const book = books.find((book) => book.isbn === isbn);
+  res.render("book-details", { book });
+});
 
-  if (book) {
-    res.render("index", { book });
-  }
+app.put("/:id", function (req, res) {
+  const isbn = req.params.id;
+  const bookIndex = books.findIndex((book) => book.isbn === isbn);
+  book = req.body;
+  books[bookIndex] = req.body;
+  res.redirect("/");
 });
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+
+app.get("/edit/:id", function (req, res) {
+  const isbn = req.params.id;
+  const book = books.find((book) => book.isbn === isbn);
+  res.render("edit-book", { book });
 });
+
+// Start the server
+app.listen(3000, () => console.log("Server running on port 3000"));
