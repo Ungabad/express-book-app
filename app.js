@@ -50,9 +50,9 @@ app.put("/:id", async function (req, res) {
   res.redirect("/");
 });
 
-app.get("/edit/:id", function (req, res) {
+app.get("/edit/:id", async function (req, res) {
   const isbn = req.params.id;
-  const book = books.find((book) => book.isbn === isbn);
+  await Book.findOne({ isbn: isbn });
   res.render("edit-book", { book });
 });
 
