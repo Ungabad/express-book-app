@@ -55,9 +55,19 @@ app.put("/:id", async function (req, res) {
 });
 
 app.get("/edit/:id", async function (req, res) {
-  const isbn = req.params.id;
-  await Book.findOne({ isbn: isbn });
-  res.render("edit-book", { book });
+  try {
+    const isbn = req.params.id;
+    const book = await Book.findOne({ isbn: isbn });
+
+    if (book) {
+      res.render("edit-book", { book });
+    } else {
+      res.status(404).send("Book not found");
+    }
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    res.status(500).send("Server error");
+  }
 });
 
 // Start the server
