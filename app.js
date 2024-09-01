@@ -18,26 +18,32 @@ app.set("view engine", "pug");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
 // Define routes here
+// This section handles the main pages
 app.get("/", async function (req, res) {
   const books = await Book.find();
   res.render("books", { books });
 });
 
+// This section handles the Add Book button
 app.post("/", async function (req, res) {
   await Book.create(req.body);
   res.redirect("/");
 });
 
+// This section handles the Delete button
 app.delete("/:id", async function (req, res) {
   await Book.deleteOne({ isbn: req.params.id });
   res.redirect("/");
 });
 
+// This Section handles the New Book
 app.get("/new", function (req, res) {
   res.render("new-book");
 });
 
+// This section handles the Book Details
 app.get("/book-details/:id", async function (req, res) {
   const isbn = req.params.id;
   const book = await Book.findOne({ isbn: isbn }); // Assuming isbn is unique, use findOne instead of find
@@ -48,12 +54,14 @@ app.get("/book-details/:id", async function (req, res) {
   }
 });
 
+// This section handles the Update Book button
 app.put("/:id", async function (req, res) {
   const isbn = req.params.id;
   await Book.findOneAndUpdate({ isbn: isbn }, req.body);
   res.redirect("/");
 });
 
+// This section handles book editing
 app.get("/edit/:id", async function (req, res) {
   try {
     const isbn = req.params.id;
