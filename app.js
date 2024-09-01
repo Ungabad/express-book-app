@@ -38,10 +38,14 @@ app.get("/new", function (req, res) {
   res.render("new-book");
 });
 
-app.get("/:id", async function (req, res) {
+app.get("/book-details/:id", async function (req, res) {
   const isbn = req.params.id;
-  const book = await Book.find({ isbn: isbn });
-  res.render("book-details", { book });
+  const book = await Book.findOne({ isbn: isbn }); // Assuming isbn is unique, use findOne instead of find
+  if (book) {
+    res.render("book-details", { book });
+  } else {
+    res.status(404).send("Book not found");
+  }
 });
 
 app.put("/:id", async function (req, res) {
