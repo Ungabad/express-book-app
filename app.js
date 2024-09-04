@@ -4,16 +4,17 @@ let books = require("./book-data").books;
 const methodOverride = require("method-override");
 const Book = require("./models/Books");
 const mongoose = require("mongoose");
-require("dotenv").config;
+require("dotenv").config();
 
 const app = express();
+console.log(process.env.MONGO_DB_API_KEY);
 mongoose.connect(
   `mongodb+srv://${process.env.MONGO_DB_API_KEY}@cluster0.zt5pw.mongodb.net/`
 );
 // Set the view engine to pug
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
+app.use(express.static(path.join(__dirname, "public")));
 // Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
