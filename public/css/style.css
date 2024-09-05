@@ -1,4 +1,53 @@
+@import url("base.css");
+@import url("components.css");
+@import url("layout.css");
+@import url("theme.css");
+
 body {
- background-color: beige;
- color: brown;
+ width: 100%;
+ height: 95vh;
+ background-image: url(https://t4.ftcdn.net/jpg/00/65/47/35/360_F_65473506_rjydmo8sf1stj5KiJhukACvwVHNWxQAf.jpg);
+ background-repeat: no-repeat;
+ background-size: cover; 
+}
+img {
+ margin: 0 auto;
+ display: block;
+ border-radius: 50%;
+}
+
+h1 {
+  text-align: center;
+  font-size: 5em;
+  margin-bottom: calc(var(--margin) * 2);
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+h2 {
+ text-align: center;
+ font-size: 3em;
+
+}
+
+p {
+  margin-bottom: var(--margin);
+}
+
+ul {
+  list-style: none;
+  font-size: 2em;
+}
+
+a {
+ text-decoration: none;
+}
+a:link {
+ color: var(--primary-color);
+}
+a:visited {
+ color: var(--primary-color);
+}
+a:hover {
+ color: var(--secondary-color);
 }

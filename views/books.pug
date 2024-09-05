@@ -5,14 +5,14 @@ html
     title Books List
   body
     h1 Books List
+    <img src="https://picsum.photos/id/24/400/200" alt="Picture of a Book">
+        h2
+          a(href='/new') Add New Book
     ul
       each book in books
         li 
-          a(href="/book-details/" + book.isbn) | #{book.title} - #{book.author}
-          button(style="margin-right: 20px")
+          a(href="/book-details/" + book.isbn, id="edit") #{book.title} - #{book.author}
+          button(style="margin-right: 20px; margin-left: 20px;")
             a(href="/edit/" + book.isbn) Edit
           form(action="/" + book.isbn + "?_method=DELETE" method="POST" style="display: inline;")
             button(type="submit") Delete
-    a(href='/new') Add New Book
-    div
-    a(href='/') Back to Home
