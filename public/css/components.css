@@ -1,0 +1,17 @@
+button {
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
+  padding: var(--padding);
+  margin: var(--margin);
+  /* border: none; */
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+button.secondary {
+  background-color: var(--secondary-color);
+}
+
+button:hover {
+  color: var(--secondary-color)
+}
